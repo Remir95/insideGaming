@@ -1,0 +1,5 @@
+%Btext%b
+
+%F{cyan}text%f
+
+PROMPT='%B%F{cyan}%2~%f %F{178}$%f %b'
