@@ -18,13 +18,11 @@
 <script>
   export default {
     name: 'PageIndex', 
-    components:{
-
+    components:{},
+    data() {
+    return {
+      name: "",
     }
-  }
-  data() {
-    return{
-      name:'JOHN'
     }
   }
 </script>
