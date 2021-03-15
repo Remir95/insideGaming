@@ -2,7 +2,7 @@
   <q-page class="flex flex-center">
     <q-input
       v-model="name"
-      label="name"
+      label="GAMES"
       outlined
       standout="bg-blue-8 text-white"
       class="q-ma-md"
