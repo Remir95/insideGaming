@@ -175,7 +175,7 @@ export default {
 .header-image {
   height: 100%;
   z-index: 1;
-  opacity: 0.4;
+  opacity: 0.4
 }
 .degrade {
   background: linear-gradient(rgb(55, 62, 66), grey);
