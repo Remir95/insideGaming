@@ -6,7 +6,7 @@ var options = {
     useNewUrlParser: true
 }
 
-mongoose.connect('mongodb+srv://Remir95:moi@cluster0.pc5dr.mongodb.net/InsideGaming?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://Remir95:moi@cluster0.knxj0.mongodb.net/insidegaming?retryWrites=true&w=majority',
     options,
     function(err){
         console.log(err)
