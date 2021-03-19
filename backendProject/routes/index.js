@@ -4,9 +4,45 @@ var router = express.Router();
 var uid2 = require('uid2')
 var SHA256 = require('crypto-js/sha256')
 var encBase64 = require('crypto-js/enc-base64')
+var axios = require("axios").default;
 
 var userModel = require('../models/users')
+var gameModel = require('../models/games')
 
+var myApiKey = "7afcf24d0dmshb0b2e9e30e5755dp103543jsnf8ac4dc1560d"
+
+//===================== API GAME ============================//
+
+router.get('/game', function (req, res, next) {
+
+  var options = {
+    method: 'GET',
+    url: 'https://rawg-video-games-database.p.rapidapi.com/genres',
+    headers: {
+      'x-rapidapi-key': '7afcf24d0dmshb0b2e9e30e5755dp103543jsnf8ac4dc1560d',
+      'x-rapidapi-host': 'rawg-video-games-database.p.rapidapi.com'
+    }
+  };
+
+  axios.request(options).then(async function (response) {
+    console.log(response.data);
+
+    var results = response.data.results;
+    for (var i = 0; i < results.length; i++) {
+      var newResults = new gameModel({
+        name: results[i].name,
+        released: results[i].released,
+        background_image: results[i].background_image,
+        rating: results[i].rating,
+        rating_top:results[i].rating_top
+      });
+      await newResults.save();
+    }
+  }).catch(function (error) {
+    console.error('ERROR', error);
+  });
+  res.render('index');
+});
 
 //===================== SIGN UP ============================//
 router.post('/sign-up', async function (req, res, next) {
@@ -17,16 +53,16 @@ router.post('/sign-up', async function (req, res, next) {
   var token = null
 
   const data = await userModel.findOne({
-    email: req.body.emailFromFront
+    email: req.body.email
   })
 
   if (data != null) {
     error.push('utilisateur déjà présent')
   }
 
-  if (req.body.usernameFromFront == ''
-    || req.body.emailFromFront == ''
-    || req.body.passwordFromFront == ''
+  if (req.body.username == ''
+    || req.body.email == ''
+    || req.body.password == ''
   ) {
     error.push('champs vides')
   }
@@ -35,9 +71,9 @@ router.post('/sign-up', async function (req, res, next) {
 
     var salt = uid2(32)
     var newUser = new userModel({
-      username: req.body.usernameFromFront,
-      email: req.body.emailFromFront,
-      password: SHA256(req.body.passwordFromFront + salt).toString(encBase64),
+      username: req.body.username,
+      email: req.body.email,
+      password: SHA256(req.body.password + salt).toString(encBase64),
       token: uid2(32),
       salt: salt,
     })
@@ -61,20 +97,20 @@ router.post('/sign-in', async function (req, res, next) {
   var error = []
   var token = null
 
-  if (req.body.emailFromFront == ''
-    || req.body.passwordFromFront == ''
+  if (req.body.email == ''
+    || req.body.password == ''
   ) {
     error.push('champs vides')
   }
 
   if (error.length == 0) {
     const user = await userModel.findOne({
-      email: req.body.emailFromFront,
+      email: req.body.email,
     })
 
 
     if (user) {
-      const passwordEncrypt = SHA256(req.body.passwordFromFront + user.salt).toString(encBase64)
+      const passwordEncrypt = SHA256(req.body.password + user.salt).toString(encBase64)
 
       if (passwordEncrypt == user.password) {
         result = true
