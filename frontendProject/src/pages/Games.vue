@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="flex flex-center bg-grey-4">
     <q-input
       v-model="name"
       label="GAMES"
