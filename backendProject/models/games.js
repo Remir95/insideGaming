@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 
 var gameSchema = mongoose.Schema({
-    results: String,
-    games: String,
     name: String, 
+    description: String,
+    metacritic_platforms: Array,
     released: String,
     background_image: String,
-    rating: String,
-    rating_top: String,
+    website: String,
+    playtime: Number,
 })
 
 const gameModel = mongoose.model('games', gameSchema)

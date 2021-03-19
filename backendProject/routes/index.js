@@ -25,23 +25,66 @@ router.get('/game', function (req, res, next) {
   };
 
   axios.request(options).then(async function (response) {
-    console.log(response.data);
 
     var results = response.data.results;
-    for (var i = 0; i < results.length; i++) {
-      var newResults = new gameModel({
-        name: results[i].name,
-        released: results[i].released,
-        background_image: results[i].background_image,
-        rating: results[i].rating,
-        rating_top:results[i].rating_top
-      });
-      await newResults.save();
+    var gamesList = []
+
+    for (var a = 0; a < results.length; a++) {
+      var games = results[a].games
+
+      for (var b = 0; b < games.length; b++) {
+        gamesList.push(games[b].id)
+      }
     }
+
+    for (var c = 0; c < gamesList.length; c++) {
+
+      var optionsBis = {
+        method: 'GET',
+        url: `https://rawg-video-games-database.p.rapidapi.com/games/${gamesList[c]}`,
+        headers: {
+          'x-rapidapi-key': '7afcf24d0dmshb0b2e9e30e5755dp103543jsnf8ac4dc1560d',
+          'x-rapidapi-host': 'rawg-video-games-database.p.rapidapi.com'
+        }
+      };
+
+      axios.request(optionsBis).then(async function (responseBis) {
+
+        var platform = []
+        var dataGame = responseBis.data
+
+        if (dataGame !== undefined){
+
+
+        for (var d = 0; d < dataGame.metacritic_platforms.length; d++) {
+          platform.push(dataGame.metacritic_platforms[d].platform.name)
+        
+        }
+
+        }
+        var TotalGamesList = new gameModel({
+
+          name: dataGame.name,
+          description: dataGame.description,
+          metacritic_platforms: platform,
+          released: dataGame.released,
+          background_image: dataGame.background_image,
+          website: dataGame.website,
+          playtime: dataGame.playtime,
+
+        });
+
+        await TotalGamesList.save();
+
+      }).catch(function (errorBis) {
+        console.error(errorBis);
+      });
+    }
+
   }).catch(function (error) {
     console.error('ERROR', error);
   });
-  res.render('index');
+  res.json('great')
 });
 
 //===================== SIGN UP ============================//
