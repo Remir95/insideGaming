@@ -9,7 +9,7 @@ var axios = require("axios").default;
 var userModel = require('../models/users')
 var gameModel = require('../models/games')
 
-var myApiKey = "7afcf24d0dmshb0b2e9e30e5755dp103543jsnf8ac4dc1560d"
+var myApiKey = "7afcf24d0dmshb0b2e9e30e5755dp103543jsnf8ac4dc1560d" 
 
 //===================== API GAME ============================//
 
@@ -33,21 +33,23 @@ router.get('/game', function (req, res, next) {
       var games = results[a].games
 
       for (var b = 0; b < games.length; b++) {
-        gamesList.push(games[b].id)
+        if(gamesList.indexOf(games[b].id) ===-1){
+          gamesList.push(games[b].id)
+
+        }
       }
     }
+    console.log(gamesList)
 
-    for (var c = 0; c < gamesList.length; c++) {
-
+    for (let game of gamesList){
       var optionsBis = {
         method: 'GET',
-        url: `https://rawg-video-games-database.p.rapidapi.com/games/${gamesList[c]}`,
+        url: `https://rawg-video-games-database.p.rapidapi.com/games/${game}`,
         headers: {
           'x-rapidapi-key': '7afcf24d0dmshb0b2e9e30e5755dp103543jsnf8ac4dc1560d',
           'x-rapidapi-host': 'rawg-video-games-database.p.rapidapi.com'
         }
       };
-
       axios.request(optionsBis).then(async function (responseBis) {
 
         var platform = []
@@ -55,13 +57,11 @@ router.get('/game', function (req, res, next) {
 
         if (dataGame !== undefined){
 
-
-        for (var d = 0; d < dataGame.metacritic_platforms.length; d++) {
-          platform.push(dataGame.metacritic_platforms[d].platform.name)
-        
+          for (var d = 0; d < dataGame.metacritic_platforms.length; d++) {
+            platform.push(dataGame.metacritic_platforms[d].platform.name)
+          }
         }
 
-        }
         var TotalGamesList = new gameModel({
 
           name: dataGame.name,
@@ -81,6 +81,48 @@ router.get('/game', function (req, res, next) {
       });
     }
 
+    // for (var c = 0; c < gamesList.length; c++) {
+
+    //   var optionsBis = {
+    //     method: 'GET',
+    //     url: `https://rawg-video-games-database.p.rapidapi.com/games/${gamesList[c]}`,
+    //     headers: {
+    //       'x-rapidapi-key': '7afcf24d0dmshb0b2e9e30e5755dp103543jsnf8ac4dc1560d',
+    //       'x-rapidapi-host': 'rawg-video-games-database.p.rapidapi.com'
+    //     }
+    //   };
+
+    //   axios.request(optionsBis).then(async function (responseBis) {
+
+    //     var platform = []
+    //     var dataGame = responseBis.data
+
+    //     if (dataGame !== undefined){
+
+    //       for (var d = 0; d < dataGame.metacritic_platforms.length; d++) {
+    //         platform.push(dataGame.metacritic_platforms[d].platform.name)
+    //       }
+    //     }
+
+    //     var TotalGamesList = new gameModel({
+
+    //       name: dataGame.name,
+    //       description: dataGame.description,
+    //       metacritic_platforms: platform,
+    //       released: dataGame.released,
+    //       background_image: dataGame.background_image,
+    //       website: dataGame.website,
+    //       playtime: dataGame.playtime,
+
+    //     });
+
+    //     await TotalGamesList.save();
+
+    //   }).catch(function (errorBis) {
+    //     console.error(errorBis);
+    //   });
+    // }
+
   }).catch(function (error) {
     console.error('ERROR', error);
   });
@@ -90,7 +132,6 @@ router.get('/game', function (req, res, next) {
 //===================== LIST BDD GAMES ============================//
 router.get('/list-game',async function (req, res, next) {
   var result = await gameModel.find();
-  console.log(result);
   res.json(result)
 });
 

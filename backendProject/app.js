@@ -1,4 +1,3 @@
-require('./models/connection')
 
 var createError = require('http-errors');
 var express = require('express');
@@ -8,10 +7,15 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var cors = require('cors');
 
 var app = express();
+require('./models/connection')
+
 
 // view engine setup
+var corsOptions = { origin: 'http://localhost:8080', optionsSuccessStatus: 200, methods: "GET, PUT, DELETE, POST, UPDATE" }; 
+app.use(cors(corsOptions));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -39,5 +43,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;
