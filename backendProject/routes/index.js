@@ -87,6 +87,19 @@ router.get('/game', function (req, res, next) {
   res.json('great')
 });
 
+//===================== LIST BDD GAMES ============================//
+router.get('/list-game',async function (req, res, next) {
+  var result = await gameModel.find();
+  console.log(result);
+  res.json(result)
+});
+
+//===================== LIST USERS ============================//
+router.get('/user',async function (req, res, next) {
+  var user = await userModel.find();
+  res.json(user)
+});
+
 //===================== SIGN UP ============================//
 router.post('/sign-up', async function (req, res, next) {
 
