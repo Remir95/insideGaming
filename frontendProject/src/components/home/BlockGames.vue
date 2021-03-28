@@ -48,6 +48,6 @@ export default {
 .cardBackground {
   overflow: auto;
   background-color: transparent;
-  border-radius: 0px;
+  border-radius: 10px;
 }
 </style>
