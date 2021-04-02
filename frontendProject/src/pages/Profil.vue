@@ -1,24 +1,16 @@
 <template>
-  <q-page class="flex flex-center bg-grey-4">
-    <q-input
-      v-model="name"
-      label="PROFILE"
-      outlined
-      standout="bg-blue-8 text-white"
-      class="q-ma-md"
-    >
-      <template v-slot:append>
-        <q-icon name="person"></q-icon>
-      </template>
-    </q-input>
-    <q-btn color="red" round icon="flag" size="lg" :loading="false"> </q-btn>
+  <q-page class="bg-grey-4">
+    <block-avatar-name/>
+    <block-my-games/>
   </q-page>
 </template>
 
 <script>
+import BlockAvatarName from '../components/profil/blockAvatarName.vue'
+import BlockMyGames from '../components/profil/blockMyGames.vue'
   export default {
     name: 'PageIndex', 
-    components:{},
+    components:{BlockAvatarName, BlockMyGames},
     data() {
     return {
       name: "",

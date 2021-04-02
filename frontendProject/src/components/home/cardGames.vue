@@ -1,59 +1,48 @@
 <template>
-  <div class="fit row wrap justify-start items-start content-start">
-    <q-card
-      v-for="(game, index) in games"
-      :key="index"
-      class="col-6 col-sm-3 shadow-0 cardBackground q-mb-lg q-pa-sm"
+  <div class="">
+    <masonry
+      :cols="{ default: 4, 1000: 3, 700: 2, 400: 1 }"
+      :gutter="{ default: '1%', 700: '2%' }"
     >
-      <q-parallax>
-        <template v-slot:media>
-          <div></div>
-        </template>
-        <template v-slot:content="scope">
-          <div
-            class="absolute column items-center"
-            :style="{
-              opacity: 0.45 + (1 - scope.percentScrolled) * 1,
-              top: scope.percentScrolled * 60 + '%',
-              left: 0,
-              right: 0,
-            }"
-          >
-            <div class="text-center blockCard">
-              <div class="fit">
-                <div class="text-h4 titleCard">{{ game.name }}</div>
-              </div>
-              <img :src="game.background_image" class="q-mt-xl pictureCard" />
-            </div>
-          </div>
-        </template>
-      </q-parallax>
-      <q-card-section class="q-pa-none q-pt-md q-px-md ellipsis-3-lines descriptionCard">
+      <div
+        v-for="(game, index) in games"
+        :key="index"
+        class="q-ma-sm shadow-3"
+      >
         <div class="">
-          {{ game.metacritic_platforms }}
+          <div class="text-h4 ">{{ game.name }}</div>
+          <img :src="game.background_image" class="q-mt-xl pictureCard" />
         </div>
-        <div>
-          {{ game.released }}
+        <div class="">
+          <div class="">
+            {{ game.metacritic_platforms }}
+          </div>
+          <div>
+            {{ game.released }}
+          </div>
+          <div>
+            {{ game.website }}
+          </div>
+          <div>
+            {{ game.playtime }}
+          </div>
         </div>
-        <div>
-          {{ game.website }}
+        <div class="">
+          <div class="">
+            {{ game.description }}
+          </div>
         </div>
-        <div>
-          {{ game.playtime }}
-        </div>
-      </q-card-section>
-      <q-card-section class="q-pa-none">
-        <div class="q-pt-md q-px-md ellipsis-3-lines descriptionCard">
-          {{ game.description }}
-        </div>
-      </q-card-section>
-    </q-card>
+      </div>
+    </masonry>
   </div>
 </template>
 
 <script>
 import { APIGames } from "../../services/games";
+import Vue from "vue";
+import VueMasonry from "vue-masonry-css";
 
+Vue.use(VueMasonry);
 export default {
   name: "CardGames",
   data() {
