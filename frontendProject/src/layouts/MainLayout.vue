@@ -26,29 +26,6 @@
           </div>
         </div>
         <q-space />
-        <div class="q-gutter-y-md column" style="width: 300px; max-width: 100%">
-          <q-input
-            style="z-index: 2"
-            standout="text-grey"
-            v-model="text"
-            label="Recherche"
-            maxlength="25"
-            :dense="dense"
-            dark
-            rounded
-            input-class="text-right"
-          >
-            <template v-slot:append>
-              <q-icon v-if="text === ''" name="search" />
-              <q-icon
-                v-else
-                name="clear"
-                class="cursor-pointer"
-                @click="text = ''"
-              />
-            </template>
-          </q-input>
-        </div>
       </q-toolbar>
       <div>
         <q-tabs v-model="tab" shrink class="mobile-show desktop-hide bg-grey-8">
@@ -144,6 +121,7 @@
 
 <script>
 import EssentialLink from "components/EssentialLink.vue";
+import { Notify } from "quasar";
 
 const linksData = [
   {
@@ -162,11 +140,45 @@ export default {
       essentialLinks: linksData,
       tab: "",
       text: "",
+      textR: true,
+      text2: "AUCUN RESULTAT",
       ph: "",
       dense: false,
       drawer: false,
       miniState: true,
+      submitting: false,
+      noResult: false,
+      framework: {
+        plugins: ["Notify"],
+        config: {
+          notify: {
+            /* look at QUASARCONFOPTIONS from the API card (bottom of page) */
+          },
+        },
+      },
     };
+  },
+  computed: {
+    filteredGames: function () {
+      return this.games.filter((game) => {
+        return game.name.match(this.text);
+      });
+    },
+  },
+  methods: {
+    async simulateSubmit() {
+      this.submitting = true;
+
+      setTimeout(() => {
+        this.noResult = true;
+        this.textR = false;
+        this.submitting = false;
+      }, 1500);
+      await setTimeout(() => {
+        this.textR = true;
+        this.noResult = false;
+      }, 2500);
+    },
   },
 };
 </script>
@@ -175,7 +187,7 @@ export default {
 .header-image {
   height: 100%;
   z-index: 1;
-  opacity: 0.4
+  opacity: 0.4;
 }
 .degrade {
   background: linear-gradient(rgb(55, 62, 66), grey);

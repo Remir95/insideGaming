@@ -14,9 +14,25 @@
                 square
                 filled
                 clearable
-                v-model="username"
-                type="username"
-                label="username"
+                v-model="pseudo"
+                type="pseudo"
+                label="Pseudo"
+              />
+              <q-input
+                square
+                filled
+                clearable
+                v-model="firstname"
+                type="firstname"
+                label="Prénom"
+              />
+              <q-input
+                square
+                filled
+                clearable
+                v-model="lastname"
+                type="lastname"
+                label="Nom"
               />
               <q-input
                 square
@@ -43,6 +59,7 @@
               size="lg"
               class="full-width"
               label="sign-up"
+              @click="signUp()"
             />
           </q-card-actions>
           <q-card-section class="text-center q-pa-none"> </q-card-section>
@@ -53,15 +70,57 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "signup",
   data() {
     return {
-      username: "",
+      pseudo: "",
+      firstname: "",
+      lastname: "",
       email: "",
-      password: "",
+      password: ""
     };
   },
+  methods: {
+    signUp() {
+      axios
+        .post(
+          `http://localhost:3000/sign-up`,
+          JSON.stringify({
+            pseudo: this.pseudo,
+            firstname: this.firstname,
+            lastname: this.lastname,
+            email: this.email,
+            password: this.password
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer {token}"
+            }
+          }
+        )
+        .then(response => {
+          console.log("RESPONSE", response);
+          {
+            localStorage.token = response.data.token;
+            localStorage.email = this.email;
+            localStorage.pseudo = this.pseudo;
+          }
+          if (localStorage.token) {
+            this.email = localStorage.email;
+            this.token = localStorage.token;
+            this.pseudo = localStorage.pseudo;
+            console.log("TEST SAVE", this.token);
+          }
+        })
+        .catch(e => {
+          this.errors.push(e);
+        });
+    }
+  }
 };
 </script>
 

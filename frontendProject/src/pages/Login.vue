@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import { userSignIn } from "../services/user";
 import axios from "axios";
 
 export default {

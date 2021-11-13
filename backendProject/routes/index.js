@@ -9,7 +9,7 @@ var axios = require("axios").default;
 var userModel = require('../models/users')
 var gameModel = require('../models/games')
 
-var myApiKey = "7afcf24d0dmshb0b2e9e30e5755dp103543jsnf8ac4dc1560d" 
+var myApiKey = "7afcf24d0dmshb0b2e9e30e5755dp103543jsnf8ac4dc1560d"
 
 //===================== API GAME ============================//
 
@@ -33,7 +33,7 @@ router.get('/game', function (req, res, next) {
       var games = results[a].games
 
       for (var b = 0; b < games.length; b++) {
-        if(gamesList.indexOf(games[b].id) ===-1){
+        if (gamesList.indexOf(games[b].id) === -1) {
           gamesList.push(games[b].id)
 
         }
@@ -41,12 +41,12 @@ router.get('/game', function (req, res, next) {
     }
     console.log(gamesList)
 
-    for (let game of gamesList){
+    for (let game of gamesList) {
       var optionsBis = {
         method: 'GET',
         url: `https://rawg-video-games-database.p.rapidapi.com/games/${game}`,
         headers: {
-          'x-rapidapi-key': '7afcf24d0dmshb0b2e9e30e5755dp103543jsnf8ac4dc1560d',
+          'x-rapidapi-key': '0efec5c18cmsh39f4f04ebed6425p14b369jsn6f3a788327d1',
           'x-rapidapi-host': 'rawg-video-games-database.p.rapidapi.com'
         }
       };
@@ -55,7 +55,7 @@ router.get('/game', function (req, res, next) {
         var platform = []
         var dataGame = responseBis.data
 
-        if (dataGame !== undefined){
+        if (dataGame !== undefined) {
 
           for (var d = 0; d < dataGame.metacritic_platforms.length; d++) {
             platform.push(dataGame.metacritic_platforms[d].platform.name)
@@ -130,13 +130,13 @@ router.get('/game', function (req, res, next) {
 });
 
 //===================== LIST BDD GAMES ============================//
-router.get('/list-game',async function (req, res, next) {
+router.get('/list-game', async function (req, res, next) {
   var result = await gameModel.find();
   res.json(result)
 });
 
 //===================== LIST USERS ============================//
-router.get('/user',async function (req, res, next) {
+router.get('/user', async function (req, res, next) {
   var user = await userModel.find();
   res.json(user)
 });
@@ -157,7 +157,9 @@ router.post('/sign-up', async function (req, res, next) {
     error.push('utilisateur déjà présent')
   }
 
-  if (req.body.username == ''
+  if (req.body.firstname == ''
+    || req.body.lastname == ''
+    || req.body.pseudo == ''
     || req.body.email == ''
     || req.body.password == ''
   ) {
@@ -168,7 +170,9 @@ router.post('/sign-up', async function (req, res, next) {
 
     var salt = uid2(32)
     var newUser = new userModel({
-      username: req.body.username,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      pseudo: req.body.pseudo,
       email: req.body.email,
       password: SHA256(req.body.password + salt).toString(encBase64),
       token: uid2(32),
@@ -232,7 +236,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/user', function (req, res, next) {
-  
+
   res.render('');
 });
 

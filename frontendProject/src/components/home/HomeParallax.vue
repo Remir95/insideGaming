@@ -1,10 +1,10 @@
 <template>
-  <div class="q-pb-md">
+  <div>
     <q-parallax>
       <template v-slot:media>
         <img
           style="background-attachment: fixed; background-size: 100% auto"
-          src="/pictures/duoGame.jpeg"
+          src="/pictures/backgroundCard.jpeg"
         />
       </template>
 
@@ -18,11 +18,7 @@
             right: 0,
           }"
         >
-          <img
-            src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg"
-            style="width: 150px; height: 150px"
-          />
-          <div class="text-h3 text-white text-center">Quasar Framework</div>
+          <div class="text-h3 text-white text-center">Quel sera ton jeu du moment ? </div>
         </div>
       </template>
     </q-parallax>

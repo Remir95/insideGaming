@@ -4,7 +4,7 @@
       <q-card class="my-card card shadow-10 q-mt-xl" basic>
         <div
           class="absolute-bottom text-subtitle2 text-center divText"
-          style="border-radius: 0px 0px 4px 10px"
+          style="border-radius: 4px 4px 4px 10px; padding:89px"
         >
           Bonjour master {{ name }}
         </div>
@@ -22,7 +22,7 @@
       <q-card class="my-card card shadow-10" style="margin-left:0px" basic>
         <div
           class="absolute-bottom text-subtitle2 text-center divText"
-          style="border-radius: 0px 0px 4px 10px"
+          style="border-radius: 4px 4px 4px 10px; padding:40px"
         >
           Bonjour master {{ name }}
         </div>
